@@ -282,19 +282,27 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
 
   // Invalidate map size when fullscreen changes
   useEffect(() => {
-    if (mapRef.current && isFullscreen) {
-      // Multiple invalidateSize calls to ensure Leaflet recalculates
-      setTimeout(() => {
-        mapRef.current?.invalidateSize();
-      }, 50);
-      setTimeout(() => {
-        mapRef.current?.invalidateSize();
-      }, 200);
-      setTimeout(() => {
-        mapRef.current?.invalidateSize();
-      }, 400);
-    }
-  }, [isFullscreen]);
+    if (!mapRef.current) return;
+
+    // Multiple invalidateSize calls to ensure Leaflet recalculates
+    setTimeout(() => {
+      mapRef.current?.invalidateSize();
+    }, 50);
+    setTimeout(() => {
+      mapRef.current?.invalidateSize();
+    }, 200);
+    setTimeout(() => {
+      mapRef.current?.invalidateSize();
+      
+      // When exiting fullscreen, recenter on marker
+      if (!isFullscreen && latitude !== null && longitude !== null) {
+        const hasValidCoords = !isNaN(latitude) && !isNaN(longitude);
+        if (hasValidCoords) {
+          mapRef.current?.setView([latitude, longitude], Math.max(mapRef.current?.getZoom() || MARKER_ZOOM, MARKER_ZOOM), { animate: true });
+        }
+      }
+    }, 400);
+  }, [isFullscreen, latitude, longitude]);
 
   // Initialize map
   useEffect(() => {
