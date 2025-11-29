@@ -1,14 +1,8 @@
-import { MapPin, Moon, Sun, Globe } from 'lucide-react';
+import { MapPin, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { useLanguage } from '@/hooks/use-language';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -31,22 +25,34 @@ export function Header() {
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
-          <Select value={language} onValueChange={(val: any) => setLanguage(val)} data-testid="select-language">
-            <SelectTrigger className="w-[160px]">
-              <span className="text-xl">
-                {language === 'en' && '🇺🇸'}
-                {language === 'uz' && '🇺🇿'}
-                {language === 'ru' && '🇷🇺'}
-              </span>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="en"><span className="text-lg">🇺🇸</span> {t('english')}</SelectItem>
-              <SelectItem value="uz"><span className="text-lg">🇺🇿</span> {t('uzbek')}</SelectItem>
-              <SelectItem value="ru"><span className="text-lg">🇷🇺</span> {t('russian')}</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex items-center gap-1">
+          <Button
+            variant={language === 'en' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setLanguage('en')}
+            data-testid="button-lang-en"
+            className="font-semibold"
+          >
+            EN
+          </Button>
+          <Button
+            variant={language === 'uz' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setLanguage('uz')}
+            data-testid="button-lang-uz"
+            className="font-semibold"
+          >
+            UZ
+          </Button>
+          <Button
+            variant={language === 'ru' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setLanguage('ru')}
+            data-testid="button-lang-ru"
+            className="font-semibold"
+          >
+            RU
+          </Button>
           
           <Button
             variant="ghost"
