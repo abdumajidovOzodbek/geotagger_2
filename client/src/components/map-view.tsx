@@ -468,7 +468,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
         <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-background border-b">
           <div className="flex items-center gap-2">
             <MapIcon className="w-4 h-4" />
-            <span className="text-sm font-semibold">Location Map (Fullscreen)</span>
+            <span className="text-sm font-semibold">{t('locationMapFullscreen')}</span>
           </div>
           <Button
             variant="outline"
@@ -486,7 +486,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
           <CardHeader className="pb-3 flex-shrink-0">
             <CardTitle className="text-base font-semibold flex items-center gap-2">
               <MapIcon className="w-4 h-4" />
-              Location Map
+              {t('locationMap')}
             </CardTitle>
           </CardHeader>
         )}
