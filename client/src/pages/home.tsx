@@ -286,10 +286,10 @@ export default function Home() {
     <div className="h-screen bg-background flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto max-w-screen-2xl px-3 lg:px-6 py-2 overflow-hidden">
+      <main className="flex-1 container mx-auto max-w-screen-2xl px-3 lg:px-6 py-1.5 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
           {/* Left Panel - Scrollable */}
-          <div className="space-y-3 flex flex-col overflow-y-auto pr-2">
+          <div className="space-y-2.5 flex flex-col flex-1 overflow-y-auto pr-2">
             <FileUploader
               onFileSelect={handleFileSelect}
               selectedFile={selectedFile}
@@ -335,7 +335,7 @@ export default function Home() {
       </main>
       
       {/* Footer */}
-      <footer className="border-t py-1 flex-shrink-0">
+      <footer className="border-t py-0.5 flex-shrink-0">
         <div className="container mx-auto max-w-screen-2xl px-3 lg:px-6">
           <p className="text-xs text-muted-foreground text-center">
             All processing happens locally in your browser. Your images are never uploaded to any server.
