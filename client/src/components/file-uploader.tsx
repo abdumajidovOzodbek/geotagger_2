@@ -110,7 +110,7 @@ export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear
         <label
           htmlFor="file-upload"
           className={cn(
-            "flex flex-col items-center justify-center w-full h-32 cursor-pointer rounded-xl border-2 border-dashed transition-colors",
+            "flex flex-col items-center justify-center w-full h-40 cursor-pointer rounded-xl border-2 border-dashed transition-colors",
             isDragging 
               ? "border-primary bg-primary/5" 
               : "border-muted-foreground/25 hover:border-primary/50 hover:bg-muted/50"

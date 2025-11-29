@@ -22,23 +22,22 @@ export function ActionButtons({
   
   return (
     <Card className="overflow-visible">
-      <CardContent className="p-2">
-        <div className="flex flex-col gap-1.5">
+      <CardContent className="p-3">
+        <div className="flex flex-col gap-2.5">
           <Button
             onClick={onWriteExif}
             disabled={!canWrite || isWriting}
-            size="sm"
-            className="w-full gap-1 text-xs h-8"
+            className="w-full gap-2 text-sm h-10"
             data-testid="button-write-exif"
           >
             {isWriting ? (
               <>
-                <Loader2 className="w-3 h-3 animate-spin" />
+                <Loader2 className="w-4 h-4 animate-spin" />
                 {t('writeExif')}...
               </>
             ) : (
               <>
-                <Save className="w-3 h-3" />
+                <Save className="w-4 h-4" />
                 {t('writeExif')}
               </>
             )}
@@ -46,13 +45,12 @@ export function ActionButtons({
           
           <Button
             variant="outline"
-            size="sm"
             onClick={onDownload}
             disabled={!canDownload}
-            className="w-full gap-1 text-xs h-8"
+            className="w-full gap-2 text-sm h-10"
             data-testid="button-download"
           >
-            <Download className="w-3 h-3" />
+            <Download className="w-4 h-4" />
             {t('download')}
           </Button>
         </div>

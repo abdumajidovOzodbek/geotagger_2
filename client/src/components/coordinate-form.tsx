@@ -57,10 +57,10 @@ export function CoordinateForm({
           {t('enterCoordinates')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <div className="grid grid-cols-2 gap-2">
+      <CardContent className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
           {/* Latitude */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <Label htmlFor="latitude" className="text-xs font-medium">
               {t('latitude')}
             </Label>
@@ -73,14 +73,14 @@ export function CoordinateForm({
               placeholder="-90 to 90"
               value={latitude}
               onChange={(e) => onLatitudeChange(e.target.value)}
-              className={`text-xs h-8 ${!isLatValid ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+              className={`text-xs h-10 ${!isLatValid ? 'border-destructive focus-visible:ring-destructive' : ''}`}
               disabled={!hasImage}
               data-testid="input-latitude"
             />
           </div>
 
           {/* Longitude */}
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             <Label htmlFor="longitude" className="text-xs font-medium">
               {t('longitude')}
             </Label>
@@ -93,7 +93,7 @@ export function CoordinateForm({
               placeholder="-180 to 180"
               value={longitude}
               onChange={(e) => onLongitudeChange(e.target.value)}
-              className={`text-xs h-8 ${!isLngValid ? 'border-destructive focus-visible:ring-destructive' : ''}`}
+              className={`text-xs h-10 ${!isLngValid ? 'border-destructive focus-visible:ring-destructive' : ''}`}
               disabled={!hasImage}
               data-testid="input-longitude"
             />
@@ -101,7 +101,7 @@ export function CoordinateForm({
         </div>
 
         {/* Altitude */}
-        <div className="space-y-1">
+        <div className="space-y-1.5">
           <Label htmlFor="altitude" className="text-xs font-medium flex items-center gap-1">
             <Mountain className="w-3 h-3" />
             {t('altitude')}
@@ -113,14 +113,14 @@ export function CoordinateForm({
             placeholder="e.g., 100"
             value={altitude}
             onChange={(e) => onAltitudeChange(e.target.value)}
-            className="text-xs h-8"
+            className="text-xs h-10"
             disabled={!hasImage}
             data-testid="input-altitude"
           />
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-1.5 pt-1">
+        <div className="flex flex-col gap-2.5 pt-2">
           <Button
             variant="outline"
             size="sm"
