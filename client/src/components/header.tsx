@@ -33,14 +33,18 @@ export function Header() {
         
         <div className="flex items-center gap-2">
           <Select value={language} onValueChange={(val: any) => setLanguage(val)} data-testid="select-language">
-            <SelectTrigger className="w-[120px]">
-              <Globe className="w-4 h-4 mr-2" />
+            <SelectTrigger className="w-[140px]">
+              <span>
+                {language === 'en' && '🇺🇸'}
+                {language === 'uz' && '🇺🇿'}
+                {language === 'ru' && '🇷🇺'}
+              </span>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="en">{t('english')}</SelectItem>
-              <SelectItem value="uz">{t('uzbek')}</SelectItem>
-              <SelectItem value="ru">{t('russian')}</SelectItem>
+              <SelectItem value="en">🇺🇸 {t('english')}</SelectItem>
+              <SelectItem value="uz">🇺🇿 {t('uzbek')}</SelectItem>
+              <SelectItem value="ru">🇷🇺 {t('russian')}</SelectItem>
             </SelectContent>
           </Select>
           
