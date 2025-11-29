@@ -15,6 +15,8 @@ import {
   writeGpsToImage,
   removeGpsFromImage,
   base64ToBlob,
+  convertImageToJpeg,
+  getImageMimeType,
 } from '@/lib/exif-utils';
 
 export default function Home() {
@@ -166,7 +168,7 @@ export default function Home() {
   }, [imageBase64, toast, t]);
 
   // Write EXIF tags
-  const handleWriteExif = useCallback(() => {
+  const handleWriteExif = useCallback(async () => {
     if (!imageBase64) return;
 
     const lat = parseFloat(latitude);
@@ -203,7 +205,15 @@ export default function Home() {
 
     try {
       const alt = altitude ? parseFloat(altitude) : undefined;
-      const newBase64 = writeGpsToImage(imageBase64, {
+      let imageToWrite = imageBase64;
+      
+      // Convert non-JPEG formats to JPEG for EXIF support
+      const mimeType = getImageMimeType(imageBase64);
+      if (mimeType !== 'image/jpeg' && mimeType !== 'image/jpg') {
+        imageToWrite = await convertImageToJpeg(imageBase64);
+      }
+      
+      const newBase64 = writeGpsToImage(imageToWrite, {
         latitude: lat,
         longitude: lng,
         altitude: alt,

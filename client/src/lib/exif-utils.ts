@@ -274,3 +274,48 @@ export function base64ToBlob(base64: string): Blob {
   }
   return new Blob([u8arr], { type: mime });
 }
+
+// Convert any image format to JPEG using Canvas API
+export function convertImageToJpeg(base64Data: string, quality: number = 0.95): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Failed to get canvas context'));
+          return;
+        }
+        
+        // Fill background with white for formats with transparency
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw image
+        ctx.drawImage(img, 0, 0);
+        
+        // Convert to JPEG
+        const jpegBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(jpegBase64);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    
+    img.onerror = () => {
+      reject(new Error('Failed to load image'));
+    };
+    
+    img.src = base64Data;
+  });
+}
+
+export function getImageMimeType(base64Data: string): string {
+  const match = base64Data.match(/data:([^;]+)/);
+  return match ? match[1] : 'image/jpeg';
+}
