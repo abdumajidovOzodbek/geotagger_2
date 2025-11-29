@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/use-language';
 
 interface CoordinateFormProps {
   latitude: string;
@@ -31,6 +32,8 @@ export function CoordinateForm({
   hasImage,
   hasExistingGps,
 }: CoordinateFormProps) {
+  const { t } = useLanguage();
+  
   const validateLatitude = (value: string): boolean => {
     if (!value) return true;
     const num = parseFloat(value);
@@ -51,7 +54,7 @@ export function CoordinateForm({
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
           <MapPin className="w-4 h-4" />
-          GPS Coordinates
+          {t('enterCoordinates')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -59,7 +62,7 @@ export function CoordinateForm({
           {/* Latitude */}
           <div className="space-y-2">
             <Label htmlFor="latitude" className="text-sm font-medium">
-              Latitude
+              {t('latitude')}
             </Label>
             <Input
               id="latitude"
@@ -82,7 +85,7 @@ export function CoordinateForm({
           {/* Longitude */}
           <div className="space-y-2">
             <Label htmlFor="longitude" className="text-sm font-medium">
-              Longitude
+              {t('longitude')}
             </Label>
             <Input
               id="longitude"
@@ -107,7 +110,7 @@ export function CoordinateForm({
         <div className="space-y-2">
           <Label htmlFor="altitude" className="text-sm font-medium flex items-center gap-1">
             <Mountain className="w-3 h-3" />
-            Altitude (meters) - Optional
+            {t('altitude')}
           </Label>
           <Input
             id="altitude"
@@ -132,7 +135,7 @@ export function CoordinateForm({
             data-testid="button-use-location"
           >
             <Navigation className="w-4 h-4" />
-            {isLocating ? 'Getting location...' : 'Use My Current Location'}
+            {isLocating ? 'Getting location...' : t('useCurrentLocation')}
           </Button>
           
           {hasExistingGps && (
@@ -145,7 +148,7 @@ export function CoordinateForm({
               data-testid="button-remove-gps"
             >
               <Trash2 className="w-4 h-4" />
-              Remove GPS Data
+              {t('removeGps')}
             </Button>
           )}
         </div>

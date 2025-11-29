@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import type { ExifData } from '@/lib/exif-utils';
 import { useState } from 'react';
+import { useLanguage } from '@/hooks/use-language';
 
 interface ExifDisplayProps {
   exifData: ExifData | null;
@@ -11,6 +12,7 @@ interface ExifDisplayProps {
 
 export function ExifDisplay({ exifData }: ExifDisplayProps) {
   const [isAllTagsOpen, setIsAllTagsOpen] = useState(false);
+  const { t } = useLanguage();
 
   if (!exifData) {
     return (
@@ -21,7 +23,7 @@ export function ExifDisplay({ exifData }: ExifDisplayProps) {
               <Info className="w-6 h-6 text-muted-foreground" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Upload an image to view EXIF metadata
+              {t('noExifData')}
             </p>
           </div>
         </CardContent>
@@ -36,14 +38,14 @@ export function ExifDisplay({ exifData }: ExifDisplayProps) {
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-semibold flex items-center gap-2">
           <Camera className="w-4 h-4" />
-          EXIF Metadata
+          {t('exifData')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* GPS Status */}
         <div className="flex items-center gap-2 pb-3 border-b">
           <MapPin className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm font-medium">GPS Data:</span>
+          <span className="text-sm font-medium">{t('gpsInfo')}:</span>
           {hasGps ? (
             <Badge variant="default" className="bg-green-500/10 text-green-600 border-green-500/20 no-default-hover-elevate no-default-active-elevate">
               Found
@@ -61,13 +63,13 @@ export function ExifDisplay({ exifData }: ExifDisplayProps) {
           {hasGps && (
             <>
               <div className="space-y-1">
-                <p className="text-xs text-muted-foreground">Latitude</p>
+                <p className="text-xs text-muted-foreground">{t('latitude')}</p>
                 <p className="text-sm font-medium" data-testid="text-exif-latitude">
                   {exifData.latitude?.toFixed(6)}
                 </p>
               </div>
               <div className="space-y-1">
-                <p className="text-xs text-muted-foreground">Longitude</p>
+                <p className="text-xs text-muted-foreground">{t('longitude')}</p>
                 <p className="text-sm font-medium" data-testid="text-exif-longitude">
                   {exifData.longitude?.toFixed(6)}
                 </p>

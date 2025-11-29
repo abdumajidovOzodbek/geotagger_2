@@ -95,7 +95,7 @@ export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear
               </div>
               <div className="mt-3 flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500" />
-                <span className="text-xs text-muted-foreground">Ready for editing</span>
+                <span className="text-xs text-muted-foreground">{t('enterCoordinates')}</span>
               </div>
             </div>
           </div>
@@ -132,13 +132,13 @@ export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear
               )}
             </div>
             <p className="text-sm font-medium">
-              {isDragging ? 'Drop your image here' : 'Drop your JPG/JPEG here'}
+              {isDragging ? t('dragDropText') : t('dragDropText')}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              or click to browse
+              {t('orText')} {t('selectFileButton')}
             </p>
             <p className="text-xs text-muted-foreground mt-3">
-              Supports: JPG, JPEG
+              {t('supportedFormats')}
             </p>
           </div>
           <input

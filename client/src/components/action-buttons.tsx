@@ -1,6 +1,7 @@
 import { Download, Save, Loader2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/use-language';
 
 interface ActionButtonsProps {
   onWriteExif: () => void;
@@ -17,6 +18,8 @@ export function ActionButtons({
   canDownload,
   isWriting,
 }: ActionButtonsProps) {
+  const { t } = useLanguage();
+  
   return (
     <Card className="overflow-visible">
       <CardContent className="p-4">
@@ -30,12 +33,12 @@ export function ActionButtons({
             {isWriting ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Writing EXIF...
+                {t('writeExif')}...
               </>
             ) : (
               <>
                 <Save className="w-4 h-4" />
-                Write EXIF Tags
+                {t('writeExif')}
               </>
             )}
           </Button>
@@ -48,7 +51,7 @@ export function ActionButtons({
             data-testid="button-download"
           >
             <Download className="w-4 h-4" />
-            Download Image
+            {t('download')}
           </Button>
         </div>
       </CardContent>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Map as MapIcon, Search, Maximize2, Minimize2, Layers, X, Loader2 } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 import { cn } from '@/lib/utils';
 
 interface MapViewProps {
@@ -60,6 +61,7 @@ const tileLayers = {
 };
 
 export function MapView({ latitude, longitude, onPositionChange, hasImage }: MapViewProps) {
+  const { t } = useLanguage();
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const fullscreenContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -115,12 +117,12 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
       setShowSearchResults(true);
       
       if (data.length === 0) {
-        setSearchError('No locations found. Try a different search term.');
+        setSearchError(t('noLocationsFound'));
       }
     } catch (error) {
       console.error('Search error:', error);
       setSearchResults([]);
-      setSearchError('Search failed. Please try again.');
+      setSearchError(t('searchFailed'));
     } finally {
       setIsSearching(false);
     }
@@ -324,7 +326,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
             <Input
               type="search"
-              placeholder="Search location..."
+              placeholder={t('searchLocation')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 pr-9 bg-background/95 backdrop-blur-sm shadow-lg border-0"
@@ -453,7 +455,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
       {!hasImage && (
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-[1000]">
           <p className="text-sm text-muted-foreground text-center px-4">
-            Upload an image to set or view GPS location
+            {t('uploadImageToSetLocation')}
           </p>
         </div>
       )}
