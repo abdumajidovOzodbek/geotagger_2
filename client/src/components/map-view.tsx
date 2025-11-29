@@ -456,31 +456,34 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
   // Fullscreen mode
   if (isFullscreen) {
     return (
-      <>
-        <Card className="h-full flex flex-col overflow-visible">
-          <CardHeader className="pb-3 flex-shrink-0">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
+      <div
+        ref={fullscreenContainerRef}
+        className="fixed inset-0 z-[9999] bg-background"
+      >
+        <div className="relative w-full h-full">
+          {/* Fullscreen Close Header */}
+          <div className="absolute top-0 left-0 right-0 z-[10000] flex items-center justify-between p-4 bg-background/95 backdrop-blur-sm border-b">
+            <div className="flex items-center gap-2">
               <MapIcon className="w-4 h-4" />
-              Location Map
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="flex-1 p-0">
-            <div className="h-full min-h-[400px] lg:min-h-0 flex items-center justify-center bg-muted rounded-b-xl">
-              <p className="text-sm text-muted-foreground">Map is in fullscreen mode</p>
+              <span className="text-sm font-semibold">Location Map (Fullscreen)</span>
             </div>
-          </CardContent>
-        </Card>
-        
-        {/* Fullscreen Overlay */}
-        <div
-          ref={fullscreenContainerRef}
-          className="fixed inset-0 z-[9999] bg-background"
-        >
-          <div className="relative w-full h-full">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleFullscreen}
+              className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
+              data-testid="button-fullscreen-close"
+            >
+              <Minimize2 className="w-4 h-4" />
+            </Button>
+          </div>
+          
+          {/* Map Content with top padding for header */}
+          <div className="pt-16 h-full">
             {mapContent}
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
