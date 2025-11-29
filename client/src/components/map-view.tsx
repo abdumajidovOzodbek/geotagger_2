@@ -458,30 +458,28 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
     return (
       <div
         ref={fullscreenContainerRef}
-        className="fixed inset-0 z-[9999] bg-background"
+        className="fixed inset-0 z-[9999] bg-background flex flex-col"
       >
-        <div className="relative w-full h-full">
-          {/* Fullscreen Close Header */}
-          <div className="absolute top-0 left-0 right-0 z-[10000] flex items-center justify-between p-4 bg-background/95 backdrop-blur-sm border-b">
-            <div className="flex items-center gap-2">
-              <MapIcon className="w-4 h-4" />
-              <span className="text-sm font-semibold">Location Map (Fullscreen)</span>
-            </div>
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleFullscreen}
-              className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
-              data-testid="button-fullscreen-close"
-            >
-              <Minimize2 className="w-4 h-4" />
-            </Button>
+        {/* Fullscreen Close Header */}
+        <div className="flex-shrink-0 z-[10000] flex items-center justify-between p-4 bg-background/95 backdrop-blur-sm border-b">
+          <div className="flex items-center gap-2">
+            <MapIcon className="w-4 h-4" />
+            <span className="text-sm font-semibold">Location Map (Fullscreen)</span>
           </div>
-          
-          {/* Map Content with top padding for header */}
-          <div className="pt-16 h-full">
-            {mapContent}
-          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={toggleFullscreen}
+            className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
+            data-testid="button-fullscreen-close"
+          >
+            <Minimize2 className="w-4 h-4" />
+          </Button>
+        </div>
+        
+        {/* Map Content Container */}
+        <div className="flex-1 relative overflow-hidden">
+          {mapContent}
         </div>
       </div>
     );
