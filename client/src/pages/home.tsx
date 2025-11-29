@@ -7,6 +7,7 @@ import { CoordinateForm } from '@/components/coordinate-form';
 import { MapView } from '@/components/map-view';
 import { ActionButtons } from '@/components/action-buttons';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/use-language';
 import {
   type ExifData,
   fileToBase64,
@@ -18,6 +19,7 @@ import {
 
 export default function Home() {
   const { toast } = useToast();
+  const { t } = useLanguage();
   
   // File state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -57,26 +59,26 @@ export default function Home() {
           setAltitude(exif.altitude.toString());
         }
         toast({
-          title: 'GPS data found',
-          description: 'Location loaded from image EXIF data.',
+          title: t('gpsDataFound'),
+          description: t('locationLoadedFromExif'),
         });
       } else {
         setLatitude('');
         setLongitude('');
         setAltitude('');
         toast({
-          title: 'No GPS data',
-          description: 'This image has no GPS metadata. Add coordinates using the map or form.',
+          title: t('noGpsData'),
+          description: t('addCoordinatesUsingMapOrForm'),
         });
       }
     } catch {
       toast({
-        title: 'Error reading image',
-        description: 'Failed to read the image file.',
+        title: t('errorReadingImage'),
+        description: t('failedToReadImage'),
         variant: 'destructive',
       });
     }
-  }, [toast]);
+  }, [toast, t]);
 
   // Clear file
   const handleClear = useCallback(() => {

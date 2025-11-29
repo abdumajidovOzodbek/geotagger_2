@@ -1,9 +1,18 @@
-import { MapPin, Moon, Sun } from 'lucide-react';
+import { MapPin, Moon, Sun, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
+import { useLanguage } from '@/hooks/use-language';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -14,15 +23,27 @@ export function Header() {
           </div>
           <div>
             <h1 className="text-lg font-semibold tracking-tight" data-testid="text-app-title">
-              GeoTag Editor
+              {t('appTitle')}
             </h1>
             <p className="text-xs text-muted-foreground hidden sm:block">
-              Add, edit or remove GPS metadata
+              {t('appSubtitle')}
             </p>
           </div>
         </div>
         
         <div className="flex items-center gap-2">
+          <Select value={language} onValueChange={(val: any) => setLanguage(val)} data-testid="select-language">
+            <SelectTrigger className="w-[120px]">
+              <Globe className="w-4 h-4 mr-2" />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en">{t('english')}</SelectItem>
+              <SelectItem value="uz">{t('uzbek')}</SelectItem>
+              <SelectItem value="ru">{t('russian')}</SelectItem>
+            </SelectContent>
+          </Select>
+          
           <Button
             variant="ghost"
             size="icon"

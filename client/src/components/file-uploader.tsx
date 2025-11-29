@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { Upload, Image, X } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/use-language';
 import { cn } from '@/lib/utils';
 
 interface FileUploaderProps {
@@ -12,6 +13,7 @@ interface FileUploaderProps {
 }
 
 export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear }: FileUploaderProps) {
+  const { t } = useLanguage();
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
