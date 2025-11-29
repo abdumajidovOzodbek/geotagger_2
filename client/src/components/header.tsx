@@ -25,33 +25,36 @@ export function Header() {
           </div>
         </div>
         
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-2">
           <Button
             variant={language === 'en' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setLanguage('en')}
             data-testid="button-lang-en"
-            className="font-semibold"
+            className="h-10 px-3 text-2xl"
+            title="English"
           >
-            EN
+            🇺🇸
           </Button>
           <Button
             variant={language === 'uz' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setLanguage('uz')}
             data-testid="button-lang-uz"
-            className="font-semibold"
+            className="h-10 px-3 text-2xl"
+            title="Uzbek"
           >
-            UZ
+            🇺🇿
           </Button>
           <Button
             variant={language === 'ru' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setLanguage('ru')}
             data-testid="button-lang-ru"
-            className="font-semibold"
+            className="h-10 px-3 text-2xl"
+            title="Russian"
           >
-            RU
+            🇷🇺
           </Button>
           
           <Button
