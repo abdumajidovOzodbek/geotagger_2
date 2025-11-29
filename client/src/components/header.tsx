@@ -2,7 +2,7 @@ import { MapPin, Moon, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { useLanguage } from '@/hooks/use-language';
-import { cn } from '@/lib/utils';
+import 'flag-icons/css/flag-icons.min.css';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
@@ -31,30 +31,30 @@ export function Header() {
             size="sm"
             onClick={() => setLanguage('en')}
             data-testid="button-lang-en"
-            className="h-10 px-3 text-2xl"
+            className="h-10 px-2"
             title="English"
           >
-            🇺🇸
+            <span className="fi fi-us w-6 h-6" />
           </Button>
           <Button
             variant={language === 'uz' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setLanguage('uz')}
             data-testid="button-lang-uz"
-            className="h-10 px-3 text-2xl"
+            className="h-10 px-2"
             title="Uzbek"
           >
-            🇺🇿
+            <span className="fi fi-uz w-6 h-6" />
           </Button>
           <Button
             variant={language === 'ru' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setLanguage('ru')}
             data-testid="button-lang-ru"
-            className="h-10 px-3 text-2xl"
+            className="h-10 px-2"
             title="Russian"
           >
-            🇷🇺
+            <span className="fi fi-ru w-6 h-6" />
           </Button>
           
           <Button
