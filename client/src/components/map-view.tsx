@@ -438,7 +438,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
       {/* Map Container */}
       <div
         ref={mapContainerRef}
-        className="absolute inset-0"
+        className="absolute inset-0 w-full h-full"
         data-testid="map-container"
       />
 
