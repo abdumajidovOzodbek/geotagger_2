@@ -103,8 +103,8 @@ export default function Home() {
   const handleUseCurrentLocation = useCallback(() => {
     if (!navigator.geolocation) {
       toast({
-        title: 'Geolocation not supported',
-        description: 'Your browser does not support geolocation.',
+        title: t('geolocationNotSupported'),
+        description: t('browserDoesNotSupportGeolocation'),
         variant: 'destructive',
       });
       return;
@@ -121,21 +121,21 @@ export default function Home() {
         setIsLocating(false);
         setModifiedBase64(null);
         toast({
-          title: 'Location found',
-          description: 'Your current location has been set.',
+          title: t('locationFound'),
+          description: t('yourCurrentLocationHasBeenSet'),
         });
       },
       () => {
         setIsLocating(false);
         toast({
-          title: 'Location error',
-          description: 'Failed to get your current location. Please check permissions.',
+          title: t('errorGettingLocation'),
+          description: t('failedToGetYourLocation'),
           variant: 'destructive',
         });
       },
       { enableHighAccuracy: true, timeout: 10000 }
     );
-  }, [toast]);
+  }, [toast, t]);
 
   // Remove GPS data
   const handleRemoveGps = useCallback(() => {
@@ -153,17 +153,17 @@ export default function Home() {
       setExifData(newExif);
       
       toast({
-        title: 'GPS data removed',
-        description: 'GPS metadata has been removed. Download to save changes.',
+        title: t('exifRemoved'),
+        description: t('gpsDataSuccessfullyRemoved'),
       });
     } catch {
       toast({
-        title: 'Error',
-        description: 'Failed to remove GPS data.',
+        title: t('errorRemovingExif'),
+        description: t('failedToRemoveGpsData'),
         variant: 'destructive',
       });
     }
-  }, [imageBase64, toast]);
+  }, [imageBase64, toast, t]);
 
   // Write EXIF tags
   const handleWriteExif = useCallback(() => {
@@ -174,8 +174,8 @@ export default function Home() {
 
     if (isNaN(lat) || isNaN(lng)) {
       toast({
-        title: 'Invalid coordinates',
-        description: 'Please enter valid latitude and longitude values.',
+        title: t('invalidCoordinates'),
+        description: t('pleaseEnterValidCoordinates'),
         variant: 'destructive',
       });
       return;
@@ -183,8 +183,8 @@ export default function Home() {
 
     if (lat < -90 || lat > 90) {
       toast({
-        title: 'Invalid latitude',
-        description: 'Latitude must be between -90 and 90.',
+        title: t('invalidLatitude'),
+        description: t('latitudeMustBeBetween'),
         variant: 'destructive',
       });
       return;
@@ -192,8 +192,8 @@ export default function Home() {
 
     if (lng < -180 || lng > 180) {
       toast({
-        title: 'Invalid longitude',
-        description: 'Longitude must be between -180 and 180.',
+        title: t('invalidLongitude'),
+        description: t('longitudeMustBeBetween'),
         variant: 'destructive',
       });
       return;
@@ -216,19 +216,19 @@ export default function Home() {
       setExifData(newExif);
       
       toast({
-        title: 'EXIF tags written',
-        description: 'GPS metadata has been written to the image. Download to save.',
+        title: t('exifWritten'),
+        description: t('gpsDataSuccessfullyWritten'),
       });
     } catch {
       toast({
-        title: 'Error writing EXIF',
-        description: 'Failed to write EXIF data to the image.',
+        title: t('errorWritingExif'),
+        description: t('failedToWriteGpsData'),
         variant: 'destructive',
       });
     } finally {
       setIsWriting(false);
     }
-  }, [imageBase64, latitude, longitude, altitude, toast]);
+  }, [imageBase64, latitude, longitude, altitude, toast, t]);
 
   // Download image
   const handleDownload = useCallback(() => {
@@ -241,17 +241,17 @@ export default function Home() {
       saveAs(blob, fileName);
       
       toast({
-        title: 'Download started',
-        description: `Saving ${fileName}`,
+        title: t('downloadStarted'),
+        description: `${t('imageDownloaded')}: ${fileName}`,
       });
     } catch {
       toast({
-        title: 'Download failed',
-        description: 'Failed to download the image.',
+        title: t('downloadFailed'),
+        description: t('failedToDownloadImage'),
         variant: 'destructive',
       });
     }
-  }, [modifiedBase64, imageBase64, selectedFile, toast]);
+  }, [modifiedBase64, imageBase64, selectedFile, toast, t]);
 
   // Get current map coordinates
   const mapLatitude = latitude ? parseFloat(latitude) : null;
