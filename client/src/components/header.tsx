@@ -33,8 +33,8 @@ export function Header() {
         
         <div className="flex items-center gap-2">
           <Select value={language} onValueChange={(val: any) => setLanguage(val)} data-testid="select-language">
-            <SelectTrigger className="w-[140px]">
-              <span>
+            <SelectTrigger className="w-[160px]">
+              <span className="text-xl">
                 {language === 'en' && '🇺🇸'}
                 {language === 'uz' && '🇺🇿'}
                 {language === 'ru' && '🇷🇺'}
@@ -42,9 +42,9 @@ export function Header() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="en">🇺🇸 {t('english')}</SelectItem>
-              <SelectItem value="uz">🇺🇿 {t('uzbek')}</SelectItem>
-              <SelectItem value="ru">🇷🇺 {t('russian')}</SelectItem>
+              <SelectItem value="en"><span className="text-lg">🇺🇸</span> {t('english')}</SelectItem>
+              <SelectItem value="uz"><span className="text-lg">🇺🇿</span> {t('uzbek')}</SelectItem>
+              <SelectItem value="ru"><span className="text-lg">🇷🇺</span> {t('russian')}</SelectItem>
             </SelectContent>
           </Select>
           
