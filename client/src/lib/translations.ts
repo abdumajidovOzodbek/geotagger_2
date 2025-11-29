@@ -22,6 +22,7 @@ export const translations = {
     // Map
     locationMap: 'Location Map',
     locationMapFullscreen: 'Location Map (Fullscreen)',
+    showCurrentLocation: 'Show Current Location',
     searchLocation: 'Search location...',
     uploadImageToSetLocation: 'Upload an image to set or view GPS location',
     noLocationsFound: 'No locations found. Try a different search term.',
@@ -101,6 +102,7 @@ export const translations = {
     // Map
     locationMap: 'Joylashuv Xaritasi',
     locationMapFullscreen: 'Joylashuv Xaritasi (To\'liq Ekran)',
+    showCurrentLocation: 'Hozirgi Joylashuvni Ko\'rsating',
     searchLocation: 'Joylashuvni izlang...',
     uploadImageToSetLocation: 'Joylashuvni oʻrnatish yoki koʻrish uchun rasmni yuklang',
     noLocationsFound: 'Joylashuvlar topilmadi. Boshqa qidiruv shartini sinab koʻring.',
@@ -180,6 +182,7 @@ export const translations = {
     // Map
     locationMap: 'Карта местоположения',
     locationMapFullscreen: 'Карта местоположения (Полноэкранный режим)',
+    showCurrentLocation: 'Показать текущее местоположение',
     searchLocation: 'Поиск местоположения...',
     uploadImageToSetLocation: 'Загрузите изображение, чтобы установить или просмотреть расположение GPS',
     noLocationsFound: 'Местоположения не найдены. Попробуйте другой поисковый запрос.',

@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Map as MapIcon, Search, Maximize2, Minimize2, Layers, X, Loader2 } from 'lucide-react';
+import { Map as MapIcon, Search, Maximize2, Minimize2, Layers, X, Loader2, Locate } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 import { cn } from '@/lib/utils';
 
@@ -68,10 +68,13 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
   const markerRef = useRef<L.Marker | null>(null);
   const tileLayerRef = useRef<L.TileLayer | null>(null);
   const labelsLayerRef = useRef<L.TileLayer | null>(null);
+  const currentLocationMarkerRef = useRef<L.Marker | null>(null);
+  const currentLocationCircleRef = useRef<L.Circle | null>(null);
   const [isMapReady, setIsMapReady] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activeLayer, setActiveLayer] = useState<'satellite' | 'street' | 'hybrid'>('satellite');
   const [showLayerMenu, setShowLayerMenu] = useState(false);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
   
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -197,6 +200,72 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
   // Toggle fullscreen
   const toggleFullscreen = useCallback(() => {
     setIsFullscreen(prev => !prev);
+  }, []);
+
+  // Get current location
+  const showCurrentLocation = useCallback(() => {
+    setIsGettingLocation(true);
+
+    if (!navigator.geolocation) {
+      console.error('Geolocation not supported');
+      setIsGettingLocation(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude: lat, longitude: lng, accuracy } = position.coords;
+
+        if (mapRef.current) {
+          // Remove existing current location marker and circle
+          if (currentLocationMarkerRef.current) {
+            mapRef.current.removeLayer(currentLocationMarkerRef.current);
+          }
+          if (currentLocationCircleRef.current) {
+            mapRef.current.removeLayer(currentLocationCircleRef.current);
+          }
+
+          // Create marker for current location (blue dot)
+          const currentLocationIcon = L.divIcon({
+            className: 'current-location-marker',
+            html: `<div style="
+              width: 24px;
+              height: 24px;
+              background: #4285F4;
+              border: 3px solid white;
+              border-radius: 50%;
+              box-shadow: 0 2px 8px rgba(66, 133, 244, 0.5);
+            "></div>`,
+            iconSize: [24, 24],
+            iconAnchor: [12, 12],
+          });
+
+          currentLocationMarkerRef.current = L.marker([lat, lng], {
+            icon: currentLocationIcon,
+          }).addTo(mapRef.current);
+
+          // Add accuracy circle
+          currentLocationCircleRef.current = L.circle([lat, lng], {
+            radius: accuracy,
+            color: '#4285F4',
+            weight: 2,
+            opacity: 0.3,
+            fill: true,
+            fillColor: '#4285F4',
+            fillOpacity: 0.1,
+          }).addTo(mapRef.current);
+
+          // Center map on current location
+          mapRef.current.setView([lat, lng], MARKER_ZOOM, { animate: true });
+        }
+
+        setIsGettingLocation(false);
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        setIsGettingLocation(false);
+      }
+    );
   }, []);
 
   // Handle escape key for fullscreen
@@ -380,6 +449,23 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
 
       {/* Map Controls */}
       <div className="absolute top-3 right-3 z-[1000] flex flex-col gap-2">
+        {/* Current Location Button */}
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={showCurrentLocation}
+          disabled={isGettingLocation}
+          className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
+          data-testid="button-current-location"
+          title={t('showCurrentLocation')}
+        >
+          {isGettingLocation ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Locate className="w-4 h-4" />
+          )}
+        </Button>
+
         {/* Fullscreen Button */}
         <Button
           variant="outline"
