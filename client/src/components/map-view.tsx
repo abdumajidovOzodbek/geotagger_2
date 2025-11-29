@@ -211,10 +211,17 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
 
   // Invalidate map size when fullscreen changes
   useEffect(() => {
-    if (mapRef.current) {
+    if (mapRef.current && isFullscreen) {
+      // Multiple invalidateSize calls to ensure Leaflet recalculates
       setTimeout(() => {
         mapRef.current?.invalidateSize();
-      }, 100);
+      }, 50);
+      setTimeout(() => {
+        mapRef.current?.invalidateSize();
+      }, 200);
+      setTimeout(() => {
+        mapRef.current?.invalidateSize();
+      }, 400);
     }
   }, [isFullscreen]);
 
@@ -311,7 +318,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
   const mapContent = (
     <>
       {/* Search Bar */}
-      <div className="absolute top-3 left-3 right-3 z-[1000]">
+      <div className={cn("absolute z-[1000]", isFullscreen ? "top-20 left-3 right-3" : "top-3 left-3 right-3")}>
         <div className="relative max-w-md">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -453,51 +460,34 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
     </>
   );
 
-  // Fullscreen mode
-  if (isFullscreen) {
-    return (
-      <div
-        ref={fullscreenContainerRef}
-        className="fixed inset-0 z-[9999] bg-background flex flex-col"
-      >
-        {/* Fullscreen Close Header */}
-        <div className="flex-shrink-0 z-[10000] flex items-center justify-between p-4 bg-background/95 backdrop-blur-sm border-b">
-          <div className="flex items-center gap-2">
+  const cardContent = (
+    <Card className={cn("h-full flex flex-col overflow-visible", isFullscreen && "fixed inset-0 z-[9999] rounded-none")}>
+      <CardHeader className={cn("pb-3 flex-shrink-0 relative", isFullscreen && "bg-background/95 backdrop-blur-sm border-b")}>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
             <MapIcon className="w-4 h-4" />
-            <span className="text-sm font-semibold">Location Map (Fullscreen)</span>
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={toggleFullscreen}
-            className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
-            data-testid="button-fullscreen-close"
-          >
-            <Minimize2 className="w-4 h-4" />
-          </Button>
+            {isFullscreen ? "Location Map (Fullscreen)" : "Location Map"}
+          </CardTitle>
+          {isFullscreen && (
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleFullscreen}
+              className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
+              data-testid="button-fullscreen-close"
+            >
+              <Minimize2 className="w-4 h-4" />
+            </Button>
+          )}
         </div>
-        
-        {/* Map Content Container */}
-        <div className="flex-1 relative overflow-hidden">
-          {mapContent}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <Card className="h-full flex flex-col overflow-visible">
-      <CardHeader className="pb-3 flex-shrink-0">
-        <CardTitle className="text-base font-semibold flex items-center gap-2">
-          <MapIcon className="w-4 h-4" />
-          Location Map
-        </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 p-0">
-        <div className="relative h-full min-h-[400px] lg:min-h-0 rounded-b-xl overflow-hidden">
+      <CardContent className={cn("flex-1 p-0", isFullscreen && "pt-16")}>
+        <div className={cn("relative h-full min-h-[400px] lg:min-h-0 rounded-b-xl overflow-hidden", isFullscreen && "rounded-none")}>
           {mapContent}
         </div>
       </CardContent>
     </Card>
   );
+
+  return cardContent;
 }
