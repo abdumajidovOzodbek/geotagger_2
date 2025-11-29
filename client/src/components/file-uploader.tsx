@@ -36,7 +36,7 @@ export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       const file = files[0];
-      if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+      if (file.type.startsWith('image/')) {
         onFileSelect(file);
       }
     }
@@ -46,7 +46,7 @@ export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear
     const files = e.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+      if (file.type.startsWith('image/')) {
         onFileSelect(file);
       }
     }
@@ -144,7 +144,7 @@ export function FileUploader({ onFileSelect, selectedFile, imagePreview, onClear
           <input
             id="file-upload"
             type="file"
-            accept=".jpg,.jpeg,image/jpeg"
+            accept="image/*"
             onChange={handleFileInput}
             className="hidden"
             data-testid="input-file"

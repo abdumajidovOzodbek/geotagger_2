@@ -10,7 +10,7 @@ export const translations = {
     dragDropText: 'Drag and drop your image here',
     orText: 'or',
     selectFileButton: 'Select File',
-    supportedFormats: 'Supported: JPG, JPEG',
+    supportedFormats: 'Supported: JPG, JPEG, PNG, WebP, TIFF, GIF, BMP, AVIF, and more',
     
     // Coordinate Form
     latitude: 'Latitude',
@@ -90,7 +90,7 @@ export const translations = {
     dragDropText: 'Rasmingizni bu yerga surib olib keling',
     orText: 'yoki',
     selectFileButton: 'Faylni Tanlang',
-    supportedFormats: 'Qoʻllab-quvvatlanadi: JPG, JPEG',
+    supportedFormats: 'Qoʻllab-quvvatlanadi: JPG, JPEG, PNG, WebP, TIFF, GIF, BMP, AVIF, va boshqalar',
     
     // Coordinate Form
     latitude: 'Kenglik',
@@ -170,7 +170,7 @@ export const translations = {
     dragDropText: 'Перетащите ваше изображение сюда',
     orText: 'или',
     selectFileButton: 'Выбрать файл',
-    supportedFormats: 'Поддерживается: JPG, JPEG',
+    supportedFormats: 'Поддерживается: JPG, JPEG, PNG, WebP, TIFF, GIF, BMP, AVIF и др.',
     
     // Coordinate Form
     latitude: 'Широта',
