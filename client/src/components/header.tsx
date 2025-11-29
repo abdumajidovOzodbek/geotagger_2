@@ -47,24 +47,9 @@ export function Header() {
               </div>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="en" data-testid="option-lang-en">
-                <div className="flex items-center gap-2">
-                  <span className="fi fi-us w-5 h-5" />
-                  <span>US English</span>
-                </div>
-              </SelectItem>
-              <SelectItem value="uz" data-testid="option-lang-uz">
-                <div className="flex items-center gap-2">
-                  <span className="fi fi-uz w-5 h-5" />
-                  <span>UZ Uzbek</span>
-                </div>
-              </SelectItem>
-              <SelectItem value="ru" data-testid="option-lang-ru">
-                <div className="flex items-center gap-2">
-                  <span className="fi fi-ru w-5 h-5" />
-                  <span>RU Russian</span>
-                </div>
-              </SelectItem>
+              <SelectItem value="en" data-testid="option-lang-en">US English</SelectItem>
+              <SelectItem value="uz" data-testid="option-lang-uz">UZ Uzbek</SelectItem>
+              <SelectItem value="ru" data-testid="option-lang-ru">RU Russian</SelectItem>
             </SelectContent>
           </Select>
           
