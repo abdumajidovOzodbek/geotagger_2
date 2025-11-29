@@ -286,10 +286,10 @@ export default function Home() {
     <div className="h-screen bg-background flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto max-w-screen-2xl px-4 lg:px-8 py-4 overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 h-full">
-          {/* Left Panel - Upload, EXIF, Coordinates, Actions (Scrollable) */}
-          <div className="space-y-4 flex flex-col overflow-y-auto">
+      <main className="flex-1 container mx-auto max-w-screen-2xl px-3 lg:px-6 py-3 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 h-full">
+          {/* Left Panel - Scrollable */}
+          <div className="space-y-2.5 flex flex-col overflow-y-auto pr-2">
             <FileUploader
               onFileSelect={handleFileSelect}
               selectedFile={selectedFile}
@@ -323,7 +323,7 @@ export default function Home() {
           </div>
           
           {/* Right Panel - Map */}
-          <div className="h-full">
+          <div className="h-full overflow-hidden">
             <MapView
               latitude={validMapCoords ? mapLatitude : null}
               longitude={validMapCoords ? mapLongitude : null}
@@ -335,8 +335,8 @@ export default function Home() {
       </main>
       
       {/* Footer */}
-      <footer className="border-t py-2 flex-shrink-0">
-        <div className="container mx-auto max-w-screen-2xl px-4 lg:px-8">
+      <footer className="border-t py-1 flex-shrink-0">
+        <div className="container mx-auto max-w-screen-2xl px-3 lg:px-6">
           <p className="text-xs text-muted-foreground text-center">
             All processing happens locally in your browser. Your images are never uploaded to any server.
           </p>

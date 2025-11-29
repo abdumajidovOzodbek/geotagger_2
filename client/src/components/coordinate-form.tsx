@@ -51,17 +51,17 @@ export function CoordinateForm({
 
   return (
     <Card className="overflow-visible">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base font-semibold flex items-center gap-2">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-semibold flex items-center gap-2">
           <MapPin className="w-4 h-4" />
           {t('enterCoordinates')}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
+      <CardContent className="space-y-2">
+        <div className="grid grid-cols-2 gap-2">
           {/* Latitude */}
-          <div className="space-y-2">
-            <Label htmlFor="latitude" className="text-sm font-medium">
+          <div className="space-y-1">
+            <Label htmlFor="latitude" className="text-xs font-medium">
               {t('latitude')}
             </Label>
             <Input
@@ -73,18 +73,15 @@ export function CoordinateForm({
               placeholder="-90 to 90"
               value={latitude}
               onChange={(e) => onLatitudeChange(e.target.value)}
-              className={!isLatValid ? 'border-destructive focus-visible:ring-destructive' : ''}
+              className={`text-xs h-8 ${!isLatValid ? 'border-destructive focus-visible:ring-destructive' : ''}`}
               disabled={!hasImage}
               data-testid="input-latitude"
             />
-            {!isLatValid && (
-              <p className="text-xs text-destructive">Must be between -90 and 90</p>
-            )}
           </div>
 
           {/* Longitude */}
-          <div className="space-y-2">
-            <Label htmlFor="longitude" className="text-sm font-medium">
+          <div className="space-y-1">
+            <Label htmlFor="longitude" className="text-xs font-medium">
               {t('longitude')}
             </Label>
             <Input
@@ -96,19 +93,16 @@ export function CoordinateForm({
               placeholder="-180 to 180"
               value={longitude}
               onChange={(e) => onLongitudeChange(e.target.value)}
-              className={!isLngValid ? 'border-destructive focus-visible:ring-destructive' : ''}
+              className={`text-xs h-8 ${!isLngValid ? 'border-destructive focus-visible:ring-destructive' : ''}`}
               disabled={!hasImage}
               data-testid="input-longitude"
             />
-            {!isLngValid && (
-              <p className="text-xs text-destructive">Must be between -180 and 180</p>
-            )}
           </div>
         </div>
 
         {/* Altitude */}
-        <div className="space-y-2">
-          <Label htmlFor="altitude" className="text-sm font-medium flex items-center gap-1">
+        <div className="space-y-1">
+          <Label htmlFor="altitude" className="text-xs font-medium flex items-center gap-1">
             <Mountain className="w-3 h-3" />
             {t('altitude')}
           </Label>
@@ -119,13 +113,14 @@ export function CoordinateForm({
             placeholder="e.g., 100"
             value={altitude}
             onChange={(e) => onAltitudeChange(e.target.value)}
+            className="text-xs h-8"
             disabled={!hasImage}
             data-testid="input-altitude"
           />
         </div>
 
         {/* Actions */}
-        <div className="flex flex-col gap-2 pt-2">
+        <div className="flex flex-col gap-1.5 pt-1">
           <Button
             variant="outline"
             size="sm"
