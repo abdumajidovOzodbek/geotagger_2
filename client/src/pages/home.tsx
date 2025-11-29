@@ -319,6 +319,7 @@ export default function Home() {
               canWrite={canWrite}
               canDownload={canDownload}
               isWriting={isWriting}
+              hasModified={!!modifiedBase64}
             />
           </div>
           

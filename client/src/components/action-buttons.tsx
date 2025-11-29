@@ -9,6 +9,7 @@ interface ActionButtonsProps {
   canWrite: boolean;
   canDownload: boolean;
   isWriting: boolean;
+  hasModified?: boolean;
 }
 
 export function ActionButtons({
@@ -17,6 +18,7 @@ export function ActionButtons({
   canWrite,
   canDownload,
   isWriting,
+  hasModified = false,
 }: ActionButtonsProps) {
   const { t } = useLanguage();
   
@@ -44,10 +46,10 @@ export function ActionButtons({
           </Button>
           
           <Button
-            variant="outline"
+            variant={hasModified ? "default" : "outline"}
             onClick={onDownload}
             disabled={!canDownload}
-            className="w-full gap-2 text-sm h-10"
+            className={`w-full gap-2 text-sm h-10 ${hasModified ? 'ring-2 ring-offset-2 ring-offset-background' : ''}`}
             data-testid="button-download"
           >
             <Download className="w-4 h-4" />
