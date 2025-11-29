@@ -1,9 +1,12 @@
 declare module 'piexifjs' {
+  type Rational = [number, number];
+  type GPSCoordinate = [Rational, Rational, Rational];
+
   interface ExifObject {
-    '0th': Record<number, unknown>;
-    Exif: Record<number, unknown>;
-    GPS: Record<number, unknown>;
-    '1st': Record<number, unknown>;
+    '0th': { [key: number]: string | number | Rational | undefined };
+    Exif: { [key: number]: string | number | Rational | undefined };
+    GPS: { [key: number]: string | number | Rational | GPSCoordinate | undefined };
+    '1st': { [key: number]: string | number | Rational | undefined };
     thumbnail: string | null;
   }
 

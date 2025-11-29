@@ -24,6 +24,9 @@ export interface GpsCoordinates {
   altitude?: number;
 }
 
+type Rational = [number, number];
+type GPSCoordinate = [Rational, Rational, Rational];
+
 function convertDMSToDD(dms: number[], ref: string): number {
   const degrees = dms[0];
   const minutes = dms[1];
@@ -44,13 +47,13 @@ function convertDDToDMS(dd: number): [number, number, number] {
   return [degrees, minutes, seconds];
 }
 
-function formatRational(rational: [number, number] | undefined): string | null {
+function formatRational(rational: Rational | undefined): string | null {
   if (!rational) return null;
   if (rational[1] === 0) return null;
   return (rational[0] / rational[1]).toString();
 }
 
-function formatExposureTime(rational: [number, number] | undefined): string | null {
+function formatExposureTime(rational: Rational | undefined): string | null {
   if (!rational) return null;
   if (rational[1] === 0) return null;
   const value = rational[0] / rational[1];
@@ -58,6 +61,15 @@ function formatExposureTime(rational: [number, number] | undefined): string | nu
     return `${value}s`;
   }
   return `1/${Math.round(1 / value)}s`;
+}
+
+function isRational(val: unknown): val is Rational {
+  return Array.isArray(val) && val.length === 2 && typeof val[0] === 'number' && typeof val[1] === 'number';
+}
+
+function isGPSCoordinate(val: unknown): val is GPSCoordinate {
+  return Array.isArray(val) && val.length === 3 && 
+    isRational(val[0]) && isRational(val[1]) && isRational(val[2]);
 }
 
 export function readExifFromBase64(base64Data: string): ExifData {
@@ -86,28 +98,29 @@ export function readExifFromBase64(base64Data: string): ExifData {
     if (exifObj.GPS) {
       const gps = exifObj.GPS;
       
-      if (gps[piexif.GPSIFD.GPSLatitude] && gps[piexif.GPSIFD.GPSLatitudeRef]) {
-        const lat = gps[piexif.GPSIFD.GPSLatitude];
-        const latRef = gps[piexif.GPSIFD.GPSLatitudeRef];
+      const lat = gps[piexif.GPSIFD.GPSLatitude];
+      const latRef = gps[piexif.GPSIFD.GPSLatitudeRef];
+      if (isGPSCoordinate(lat) && typeof latRef === 'string') {
         result.latitude = convertDMSToDD(
           [lat[0][0] / lat[0][1], lat[1][0] / lat[1][1], lat[2][0] / lat[2][1]],
           latRef
         );
       }
 
-      if (gps[piexif.GPSIFD.GPSLongitude] && gps[piexif.GPSIFD.GPSLongitudeRef]) {
-        const lng = gps[piexif.GPSIFD.GPSLongitude];
-        const lngRef = gps[piexif.GPSIFD.GPSLongitudeRef];
+      const lng = gps[piexif.GPSIFD.GPSLongitude];
+      const lngRef = gps[piexif.GPSIFD.GPSLongitudeRef];
+      if (isGPSCoordinate(lng) && typeof lngRef === 'string') {
         result.longitude = convertDMSToDD(
           [lng[0][0] / lng[0][1], lng[1][0] / lng[1][1], lng[2][0] / lng[2][1]],
           lngRef
         );
       }
 
-      if (gps[piexif.GPSIFD.GPSAltitude]) {
-        const alt = gps[piexif.GPSIFD.GPSAltitude];
+      const alt = gps[piexif.GPSIFD.GPSAltitude];
+      const altRef = gps[piexif.GPSIFD.GPSAltitudeRef];
+      if (isRational(alt)) {
         result.altitude = alt[0] / alt[1];
-        if (gps[piexif.GPSIFD.GPSAltitudeRef] === 1) {
+        if (altRef === 1) {
           result.altitude = -result.altitude;
         }
       }
@@ -116,12 +129,19 @@ export function readExifFromBase64(base64Data: string): ExifData {
     // 0th IFD (Image) data
     if (exifObj['0th']) {
       const zeroth = exifObj['0th'];
-      result.make = zeroth[piexif.ImageIFD.Make] || null;
-      result.model = zeroth[piexif.ImageIFD.Model] || null;
-      result.orientation = zeroth[piexif.ImageIFD.Orientation] || null;
-      result.software = zeroth[piexif.ImageIFD.Software] || null;
-      result.imageWidth = zeroth[piexif.ImageIFD.ImageWidth] || null;
-      result.imageHeight = zeroth[piexif.ImageIFD.ImageLength] || null;
+      const make = zeroth[piexif.ImageIFD.Make];
+      const model = zeroth[piexif.ImageIFD.Model];
+      const orientation = zeroth[piexif.ImageIFD.Orientation];
+      const software = zeroth[piexif.ImageIFD.Software];
+      const imageWidth = zeroth[piexif.ImageIFD.ImageWidth];
+      const imageHeight = zeroth[piexif.ImageIFD.ImageLength];
+
+      result.make = typeof make === 'string' ? make : null;
+      result.model = typeof model === 'string' ? model : null;
+      result.orientation = typeof orientation === 'number' ? orientation : null;
+      result.software = typeof software === 'string' ? software : null;
+      result.imageWidth = typeof imageWidth === 'number' ? imageWidth : null;
+      result.imageHeight = typeof imageHeight === 'number' ? imageHeight : null;
 
       // Add to allTags
       if (result.make) result.allTags['Make'] = result.make;
@@ -133,11 +153,19 @@ export function readExifFromBase64(base64Data: string): ExifData {
     // Exif IFD data
     if (exifObj.Exif) {
       const exif = exifObj.Exif;
-      result.dateTaken = exif[piexif.ExifIFD.DateTimeOriginal] || exif[piexif.ExifIFD.DateTimeDigitized] || null;
-      result.exposureTime = formatExposureTime(exif[piexif.ExifIFD.ExposureTime]);
-      result.fNumber = formatRational(exif[piexif.ExifIFD.FNumber]);
-      result.iso = exif[piexif.ExifIFD.ISOSpeedRatings] || null;
-      result.focalLength = formatRational(exif[piexif.ExifIFD.FocalLength]);
+      const dateOriginal = exif[piexif.ExifIFD.DateTimeOriginal];
+      const dateDigitized = exif[piexif.ExifIFD.DateTimeDigitized];
+      const exposureTime = exif[piexif.ExifIFD.ExposureTime];
+      const fNumber = exif[piexif.ExifIFD.FNumber];
+      const iso = exif[piexif.ExifIFD.ISOSpeedRatings];
+      const focalLength = exif[piexif.ExifIFD.FocalLength];
+
+      result.dateTaken = (typeof dateOriginal === 'string' ? dateOriginal : null) || 
+                         (typeof dateDigitized === 'string' ? dateDigitized : null);
+      result.exposureTime = isRational(exposureTime) ? formatExposureTime(exposureTime) : null;
+      result.fNumber = isRational(fNumber) ? formatRational(fNumber) : null;
+      result.iso = typeof iso === 'number' ? iso : null;
+      result.focalLength = isRational(focalLength) ? formatRational(focalLength) : null;
 
       // Add to allTags
       if (result.dateTaken) result.allTags['Date Taken'] = result.dateTaken;
@@ -152,8 +180,8 @@ export function readExifFromBase64(base64Data: string): ExifData {
     if (result.longitude !== null) result.allTags['Longitude'] = result.longitude.toFixed(6);
     if (result.altitude !== null) result.allTags['Altitude'] = `${result.altitude.toFixed(1)}m`;
 
-  } catch {
-    console.log('No EXIF data found or error reading EXIF');
+  } catch (err) {
+    console.log('No EXIF data found or error reading EXIF:', err);
   }
 
   return result;
@@ -179,7 +207,7 @@ export function writeGpsToImage(base64Data: string, coords: GpsCoordinates): str
     [Math.round(latDMS[0] * 10000), 10000],
     [Math.round(latDMS[1] * 10000), 10000],
     [Math.round(latDMS[2] * 10000), 10000],
-  ];
+  ] as GPSCoordinate;
   exifObj.GPS[piexif.GPSIFD.GPSLatitudeRef] = coords.latitude >= 0 ? 'N' : 'S';
 
   // Convert longitude
@@ -188,13 +216,13 @@ export function writeGpsToImage(base64Data: string, coords: GpsCoordinates): str
     [Math.round(lngDMS[0] * 10000), 10000],
     [Math.round(lngDMS[1] * 10000), 10000],
     [Math.round(lngDMS[2] * 10000), 10000],
-  ];
+  ] as GPSCoordinate;
   exifObj.GPS[piexif.GPSIFD.GPSLongitudeRef] = coords.longitude >= 0 ? 'E' : 'W';
 
   // Set altitude if provided
   if (coords.altitude !== undefined) {
     const absAltitude = Math.abs(coords.altitude);
-    exifObj.GPS[piexif.GPSIFD.GPSAltitude] = [Math.round(absAltitude * 100), 100];
+    exifObj.GPS[piexif.GPSIFD.GPSAltitude] = [Math.round(absAltitude * 100), 100] as Rational;
     exifObj.GPS[piexif.GPSIFD.GPSAltitudeRef] = coords.altitude >= 0 ? 0 : 1;
   }
 
