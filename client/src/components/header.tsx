@@ -1,7 +1,14 @@
-import { MapPin, Moon, Sun } from 'lucide-react';
+import { MapPin, Moon, Sun, Check, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/components/theme-provider';
 import { useLanguage } from '@/hooks/use-language';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
 import 'flag-icons/css/flag-icons.min.css';
 
 export function Header() {
@@ -26,36 +33,40 @@ export function Header() {
         </div>
         
         <div className="flex items-center gap-2">
-          <Button
-            variant={language === 'en' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setLanguage('en')}
-            data-testid="button-lang-en"
-            className="h-10 px-2"
-            title="English"
-          >
-            <span className="fi fi-us w-6 h-6" />
-          </Button>
-          <Button
-            variant={language === 'uz' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setLanguage('uz')}
-            data-testid="button-lang-uz"
-            className="h-10 px-2"
-            title="Uzbek"
-          >
-            <span className="fi fi-uz w-6 h-6" />
-          </Button>
-          <Button
-            variant={language === 'ru' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setLanguage('ru')}
-            data-testid="button-lang-ru"
-            className="h-10 px-2"
-            title="Russian"
-          >
-            <span className="fi fi-ru w-6 h-6" />
-          </Button>
+          <Select value={language} onValueChange={setLanguage}>
+            <SelectTrigger className="w-48 border rounded-lg" data-testid="select-language">
+              <div className="flex items-center gap-2">
+                {language === 'en' && <span className="fi fi-us w-5 h-5" />}
+                {language === 'uz' && <span className="fi fi-uz w-5 h-5" />}
+                {language === 'ru' && <span className="fi fi-ru w-5 h-5" />}
+                <span className="font-medium">
+                  {language === 'en' && 'US English'}
+                  {language === 'uz' && 'UZ Uzbek'}
+                  {language === 'ru' && 'RU Russian'}
+                </span>
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="en" data-testid="option-lang-en">
+                <div className="flex items-center gap-2">
+                  <span className="fi fi-us w-5 h-5" />
+                  <span>US English</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="uz" data-testid="option-lang-uz">
+                <div className="flex items-center gap-2">
+                  <span className="fi fi-uz w-5 h-5" />
+                  <span>UZ Uzbek</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="ru" data-testid="option-lang-ru">
+                <div className="flex items-center gap-2">
+                  <span className="fi fi-ru w-5 h-5" />
+                  <span>RU Russian</span>
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
           
           <Button
             variant="ghost"
