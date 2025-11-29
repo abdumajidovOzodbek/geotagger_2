@@ -318,7 +318,7 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
   const mapContent = (
     <>
       {/* Search Bar */}
-      <div className={cn("absolute z-[1000]", isFullscreen ? "top-20 left-3 right-3" : "top-3 left-3 right-3")}>
+      <div className={cn("absolute z-[1000]", isFullscreen ? "top-3 left-3 right-3" : "top-3 left-3 right-3")}>
         <div className="relative max-w-md">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -461,32 +461,40 @@ export function MapView({ latitude, longitude, onPositionChange, hasImage }: Map
   );
 
   const cardContent = (
-    <Card className={cn("h-full flex flex-col overflow-visible", isFullscreen && "fixed inset-0 z-[9999] rounded-none")}>
-      <CardHeader className={cn("pb-3 flex-shrink-0 relative", isFullscreen && "bg-background/95 backdrop-blur-sm border-b")}>
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-base font-semibold flex items-center gap-2">
+    <div className={cn("h-full flex flex-col", isFullscreen && "fixed inset-0 z-[9999] bg-background")}>
+      {isFullscreen && (
+        <div className="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-background border-b">
+          <div className="flex items-center gap-2">
             <MapIcon className="w-4 h-4" />
-            {isFullscreen ? "Location Map (Fullscreen)" : "Location Map"}
-          </CardTitle>
-          {isFullscreen && (
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={toggleFullscreen}
-              className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
-              data-testid="button-fullscreen-close"
-            >
-              <Minimize2 className="w-4 h-4" />
-            </Button>
-          )}
+            <span className="text-sm font-semibold">Location Map (Fullscreen)</span>
+          </div>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={toggleFullscreen}
+            className="bg-background/95 backdrop-blur-sm shadow-lg border-0"
+            data-testid="button-fullscreen-close"
+          >
+            <Minimize2 className="w-4 h-4" />
+          </Button>
         </div>
-      </CardHeader>
-      <CardContent className={cn("flex-1 p-0", isFullscreen && "pt-16")}>
-        <div className={cn("relative h-full min-h-[400px] lg:min-h-0 rounded-b-xl overflow-hidden", isFullscreen && "rounded-none")}>
-          {mapContent}
-        </div>
-      </CardContent>
-    </Card>
+      )}
+      <Card className={cn("h-full flex flex-col overflow-visible", isFullscreen && "rounded-none border-0 shadow-none")}>
+        {!isFullscreen && (
+          <CardHeader className="pb-3 flex-shrink-0">
+            <CardTitle className="text-base font-semibold flex items-center gap-2">
+              <MapIcon className="w-4 h-4" />
+              Location Map
+            </CardTitle>
+          </CardHeader>
+        )}
+        <CardContent className="flex-1 p-0">
+          <div className={cn("relative h-full min-h-[400px] lg:min-h-0 rounded-b-xl overflow-hidden", isFullscreen && "rounded-none")}>
+            {mapContent}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 
   return cardContent;
